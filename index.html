@@ -1,0 +1,154 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+    <link rel="stylesheet" href="ОБМЕННИ.css">
+    <title>Crypto Exchange</title>
+    <style>
+        body {
+            background-color: #ccc; /* Gray background */
+        }
+
+        .ui.table {
+            background-color: #fff; /* White table */
+            color: #333;
+        }
+
+        .ui.button {
+            background-color: #FFFF00; /* Yellow */
+            color: #333;
+        }
+
+        .loading-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent black background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000; /* Ensure it's on top */
+        }
+
+        .loading-image {
+            width: 200px; /* Adjust as needed */
+            height: 200px; /* Adjust as needed */
+            animation: spin 2s linear infinite; /* Spin for 2 seconds */
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+   
+
+    <div class="ui container">
+        <header class="ui inverted segment">
+            <h1 class="ui inverted header">HMSTR Crypto Exchange OKX</h1>
+            <div class="ui inverted secondary pointing menu">
+                <a href="https://www.okx.com/ru" class="item">Swap</a>
+                <a href="https://www.okx.com/ru" class="item">About</a>
+                <a href="https://www.okx.com/ru" class="item">More</a>
+                <div class="right menu">
+                    <a href="#" class="ui inverted button" id="connect-wallet-button" onclick="showConnectWallet()">Connect Wallet</a>
+                </div>
+            </div>
+        </header>
+
+        <div class="ui segment">
+            <h2 class="ui header">Exchange Rates</h2>
+            <table class="ui table">
+                <thead>
+                    <tr>
+                        <th>Валюта</th>
+                        <th>Курс обмена</th>
+                        <th>Количество</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>$HMSTR</td>
+                        <td><span id="hmstr-exchange-rate">0.2</span> TONCOIN</td>
+                        <td><input type="number" id="hmstr-amount" placeholder="Введите сумму $HMSTR" oninput="calculateExchange('hmstr')" class="ui input"></td>
+                    </tr>
+                    <tr>
+                        <td>TONCOIN</td>
+                        <td><span id="toncoin-exchange-rate">5</span> $HMSTR</td>
+                        <td><input type="number" id="toncoin-amount" placeholder="Введите сумму TONCOIN" oninput="calculateExchange('toncoin')" class="ui input"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <button class="ui yellow button" id="exchange-button" onclick="showExchangeMessage()">Обменять</button>
+
+            <div id="exchange-message" class="ui modal">
+                <div class="header">Connect Wallet</div>
+                <div class="content">
+                    <p>Чтобы обменять $HMSTR на Toncoin нужно подключить кошелек</p>
+                </div>
+                <div class="actions">
+                    <div class="ui negative button" onclick="hideExchangeMessage()">Close</div>
+                </div>
+            </div>
+
+            <div id="connect-wallet-popup" class="ui modal">
+                <div class="header">Connect Wallet</div>
+                <div class="content">
+                    
+                </div>
+                <div class="actions">
+                    <div class="ui negative button" onclick="hideConnectWallet()">Close</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateExchange(currency) {
+            if (currency === 'hmstr') {
+                const hmstrAmount = document.getElementById('hmstr-amount').value;
+                const toncoinExchangeRate = document.getElementById('hmstr-exchange-rate').textContent;
+                document.getElementById('toncoin-amount').value = (hmstrAmount * toncoinExchangeRate).toFixed(2);
+            } else if (currency === 'toncoin') {
+                const toncoinAmount = document.getElementById('toncoin-amount').value;
+                const hmstrExchangeRate = document.getElementById('toncoin-exchange-rate').textContent;
+                document.getElementById('hmstr-amount').value = (toncoinAmount * hmstrExchangeRate).toFixed(2);
+            }
+        }
+
+        function showConnectWallet() {
+            $('#connect-wallet-popup').modal('show');
+        }
+
+        function hideConnectWallet() {
+            $('#connect-wallet-popup').modal('hide');
+        }
+
+        function showExchangeMessage() {
+            $('#exchange-message').modal('show');
+            setTimeout(hideExchangeMessage, 3000); // Close after 3 seconds
+        }
+
+        function hideExchangeMessage() {
+            $('#exchange-message').modal('hide');
+        }
+
+        // Hide loading screen after 2 seconds
+        setTimeout(function() {
+            document.querySelector('.loading-container').style.display = 'none';
+        }, 2000);
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+   
+</body>
+</html>
